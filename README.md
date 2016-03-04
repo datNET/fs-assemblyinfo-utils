@@ -1,0 +1,1 @@
+# fs-assemblyinfo-utils
