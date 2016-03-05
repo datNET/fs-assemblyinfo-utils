@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpAssemblyInfoUtils", "src\FSharpAssemblyInfoUtils\FSharpAssemblyInfoUtils.fsproj", "{7CFF4EBA-ACD5-45B8-BBCC-A3346C41910C}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpAssemblyInfoUtils.Tests", "tests\FSharpAssemblyInfoUtils.Tests\FSharpAssemblyInfoUtils.Tests.fsproj", "{E6D49119-F53E-487A-93BB-0018C298B42E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7CFF4EBA-ACD5-45B8-BBCC-A3346C41910C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CFF4EBA-ACD5-45B8-BBCC-A3346C41910C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CFF4EBA-ACD5-45B8-BBCC-A3346C41910C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6D49119-F53E-487A-93BB-0018C298B42E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6D49119-F53E-487A-93BB-0018C298B42E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6D49119-F53E-487A-93BB-0018C298B42E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6D49119-F53E-487A-93BB-0018C298B42E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
