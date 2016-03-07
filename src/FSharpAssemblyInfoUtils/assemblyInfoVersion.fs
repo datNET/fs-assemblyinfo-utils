@@ -55,3 +55,5 @@ module AssemblyInfo =
   let GetAssemblyInformationalVersionString filePath =
     File.ReadAllLines(filePath)
     |> ParseInformationalVersionStringFromLines
+
+  let ParseVersionString (assemblyInfoContents: string) = "TODO"
