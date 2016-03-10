@@ -169,9 +169,8 @@ using System.Runtime.InteropServices;
 
 [<Test>]
 let ``parse AssemblyInformationalVersion (C#)`` () =
-  let parsed = ParseInformationalVersionString assemblyInfoCsContent
-
-  parsed |> should equal "1.0.0"
+  ParseInformationalVersionString assemblyInfoCsContent
+  |> should equal "1.0.0"
 
 [<Test>]
 let ``throw an exception if AssemblyInformationalVersion missing (C#)`` () =
@@ -180,9 +179,8 @@ let ``throw an exception if AssemblyInformationalVersion missing (C#)`` () =
 
 [<Test>]
 let ``parse AssemblyInformationalVersion (F#)`` () =
-  let parsed = ParseInformationalVersionString assemblyInfoFsContent
-
-  parsed |> should equal "1.0.0"
+  ParseInformationalVersionString assemblyInfoFsContent
+  |> should equal "1.0.0"
 
 [<Test>]
 let ``throw an exception if AssemblyInformationalVersion missing (F#)`` () =
