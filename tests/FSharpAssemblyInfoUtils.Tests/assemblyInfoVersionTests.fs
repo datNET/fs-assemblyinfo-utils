@@ -174,10 +174,9 @@ let ``parse AssemblyInformationalVersion (C#)`` () =
   parsed |> should equal "1.0.0"
 
 [<Test>]
-let ``parse AssemblyVersion if AssemblyInformationalVersion missing (C#)`` () =
-  let parsed = ParseVersionString withoutCsInformationalVersion
-
-  parsed |> should equal "1.0.0"
+let ``throw an exception if AssemblyInformationalVersion missing (C#)`` () =
+  (fun() -> ParseInformationalVersionString withoutCsInformationalVersion |> ignore)
+  |> should throw typeof<System.Exception>
 
 [<Test>]
 let ``parse AssemblyInformationalVersion (F#)`` () =
@@ -186,7 +185,6 @@ let ``parse AssemblyInformationalVersion (F#)`` () =
   parsed |> should equal "1.0.0"
 
 [<Test>]
-let ``parse AssemblyVersion if AssemblyInformationalVersion missing (F#)`` () =
-  let parsed = ParseVersionString withoutCsInformationalVersion
-
-  parsed |> should equal "1.0.0"
+let ``throw an exception if AssemblyInformationalVersion missing (F#)`` () =
+  (fun() -> ParseInformationalVersionString withoutFsInformationalVersion |> ignore)
+  |> should throw typeof<System.Exception>

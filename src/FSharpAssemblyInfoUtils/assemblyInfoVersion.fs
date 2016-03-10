@@ -41,10 +41,15 @@ module AssemblyInfo =
     // back to this at some point
     m.Groups.[1].Captures.[0].Value
 
+  let _ValidateAnyInformationalVersionAttributesFound lines =
+    if Seq.isEmpty lines then raise (new Exception("Missing required AssemblyInformationalVersion attribute"))
+    else lines
+
   let ParseInformationalVersionStringFromLines lines =
     lines
     |> Seq.map trim
     |> Seq.filter _IsAssemblyInformationalVersionAttribute
+    |> _ValidateAnyInformationalVersionAttributesFound
     |> Seq.head
     |> (_GetVersionString _assemblyInformationalVersionPattern)
 
@@ -55,5 +60,3 @@ module AssemblyInfo =
   let GetAssemblyInformationalVersionString filePath =
     File.ReadAllLines(filePath)
     |> ParseInformationalVersionStringFromLines
-
-  let ParseVersionString (assemblyInfoContents: string) = "TODO"
