@@ -3,7 +3,7 @@
 open System
 open NUnit.Framework
 open FsUnit
-open FSharpUtil.AssemblyInfo
+open datNET.AssemblyInfo
 
 let assemblyInfoFsContent =
     @"
