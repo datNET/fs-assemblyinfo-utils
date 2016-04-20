@@ -1,4 +1,4 @@
-﻿namespace FSharpUtil
+﻿namespace datNET
 
 module AssemblyInfo =
   open Fake
