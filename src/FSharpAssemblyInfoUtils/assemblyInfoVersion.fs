@@ -22,14 +22,22 @@ module AssemblyInfo =
   let private _assemblyInformationalVersionPattern =
     _GetAssemblyAttributeValuePattern "AssemblyInformationalVersion"
 
-  let private _IsSingleLineComment line =
-    "^//" >** line
+
+  let private _IsSingleLineComment line = "^//" >** line
 
   let private _IsAssemblyAttribute line =
     "^\[\<?assembly\:.+\(.+\)\>?\]$" >** line
 
   let private _IsVersionAttribute line =
     (not (_IsSingleLineComment line)) && ("Version\(.+\)\>?\]$" >** line)
+
+  let private _IsAssemblyVersionAttribute line =
+    let pattern = "AssemblyVersion\(\"(.+)\"\)"
+    (not (_IsSingleLineComment line)) && (pattern >** line)
+
+  let private _IsAssemblyFileVersionAttribute line =
+    let pattern = "AssemblyFileVersion\(\"(.+)\"\)"
+    (not (_IsSingleLineComment line)) && (pattern >** line)
 
   let private _IsAssemblyInformationalVersionAttribute line =
     let pattern = "AssemblyInformationalVersion\(\"(.+)\"\)"
@@ -60,3 +68,30 @@ module AssemblyInfo =
   let GetAssemblyInformationalVersionString filePath =
     File.ReadAllLines(filePath)
     |> ParseInformationalVersionStringFromLines
+
+  // TODO: Clean this up ======================================================
+
+  let _SetAttributeParametersValue attributeName line (attributeValue: string) =
+    let pattern = String.Format(@"({0}\("").+(""\))", [| attributeName |])
+    System.Text.RegularExpressions.Regex.Replace(line, pattern, "$1" + attributeValue + "$2")
+
+  // Note: the type annotations on these are temporary
+  let private _SetAssemblyVersionValue line value =
+    _SetAttributeParametersValue "AssemblyVersion" line value
+
+  let private _SetAssemblyFileVersionValue line value =
+    _SetAttributeParametersValue "AssemblyFileVersion" line value
+
+  let private _SetAssemblyInformationalVersionValue line value =
+    _SetAttributeParametersValue "AssemblyInformationalVersion" line value
+
+  let _SetVersionValue matchLine mutateLine (fileContents: string) versionString =
+    fileContents.Split [| '\n' |]
+    |> Seq.map (fun line ->
+          if matchLine line then mutateLine line versionString
+          else line
+      )
+
+  let SetAssemblyVersion = _SetVersionValue _IsAssemblyVersionAttribute _SetAssemblyVersionValue
+  let SetAssemblyFileVersion = _SetVersionValue _IsAssemblyFileVersionAttribute _SetAssemblyFileVersionValue
+  let SetAssemblyInformationalVersion = _SetVersionValue _IsAssemblyInformationalVersionAttribute _SetAssemblyInformationalVersionValue
