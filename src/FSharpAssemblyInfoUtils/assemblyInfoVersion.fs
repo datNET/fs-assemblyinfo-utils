@@ -22,6 +22,7 @@ module AssemblyInfo =
   let private _assemblyInformationalVersionPattern =
     _GetAssemblyAttributeValuePattern "AssemblyInformationalVersion"
 
+
   let private _IsSingleLineComment line =
     "^//" >** line
 
@@ -30,6 +31,14 @@ module AssemblyInfo =
 
   let private _IsVersionAttribute line =
     (not (_IsSingleLineComment line)) && ("Version\(.+\)\>?\]$" >** line)
+
+  let private _IsAssemblyVersionAttribute line =
+    let pattern = "AssemblyVersion\(\"(.+)\"\)"
+    (not (_IsSingleLineComment line)) && (pattern >** line)
+
+  let private _IsAssemblyFileVersionAttribute line =
+    let pattern = "AssemblyFileVersion\(\"(.+)\"\)"
+    (not (_IsSingleLineComment line)) && (pattern >** line)
 
   let private _IsAssemblyInformationalVersionAttribute line =
     let pattern = "AssemblyInformationalVersion\(\"(.+)\"\)"
@@ -60,3 +69,26 @@ module AssemblyInfo =
   let GetAssemblyInformationalVersionString filePath =
     File.ReadAllLines(filePath)
     |> ParseInformationalVersionStringFromLines
+
+  // TODO: Clean this up a bit ================================================
+
+  // Note: the type annotations on these are temporary
+  let private _SetAssemblyVersionValue (value: string) =
+    "TODO"
+
+  let private _SetAssemblyFileVersionValue (value: string) =
+    "TODO"
+
+  let private _SetAssemblyInformationalVersionValue (value: string) =
+    "TODO"
+
+  let _SetVersionValue matchLine mutateLine (fileContents: string) versionString =
+    fileContents.Split [| '\n' |]
+    |> Seq.map (fun line ->
+         if matchLine line then mutateLine versionString
+         else line
+      )
+
+  let SetAssemblyVersion = _SetVersionValue _IsAssemblyVersionAttribute _SetAssemblyVersionValue
+  let SetAssemblyFileVersion = _SetVersionValue _IsAssemblyFileVersionAttribute _SetAssemblyFileVersionValue
+  let SetAssemblyInformationalVersion = _SetVersionValue _IsAssemblyInformationalVersionAttribute _SetAssemblyInformationalVersionValue
