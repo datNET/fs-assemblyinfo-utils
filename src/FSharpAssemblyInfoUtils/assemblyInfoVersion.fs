@@ -73,7 +73,7 @@ module AssemblyInfo =
 
   let _SetAttributeParametersValue attributeName line (attributeValue: string) =
     let pattern = String.Format(@"({0}\("").+(""\))", [| attributeName |])
-    System.Text.RegularExpressions.Regex.Replace(line, pattern, "$1" + attributeValue + "$2")
+    System.Text.RegularExpressions.Regex.Replace(line, pattern, "${1}" + attributeValue + "${2}")
 
   // Note: the type annotations on these are temporary
   let private _SetAssemblyVersionValue line value =
