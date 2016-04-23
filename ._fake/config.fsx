@@ -32,5 +32,5 @@ module Release =
   let Project = "FSharp.AssemblyVersion.Utils"
   let Authors = [ "Andrew Seward"; "Mathew Glodack" ]
   let Description = "AssemblyInfo file versioning utilities"
-  let OutputPath = Nuget.PackageDirName
   let WorkingDir = "bin"
+  let OutputPath = WorkingDir
