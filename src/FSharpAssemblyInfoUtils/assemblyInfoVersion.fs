@@ -59,9 +59,11 @@ module AssemblyInfo =
     if Seq.isEmpty lines then raise (new Exception("Missing required AssemblyInformationalVersion attribute"))
     else lines
 
+  let private _stripTrailingNewlines (str: string) = str.TrimEnd([| '\r' ; '\n'|])
+
   let ParseInformationalVersionStringFromLines lines =
     lines
-    |> Seq.map trim
+    |> Seq.map _stripTrailingNewlines
     |> Seq.filter _IsAssemblyInformationalVersionAttribute
     |> _ValidateAnyInformationalVersionAttributesFound
     |> Seq.head
@@ -93,7 +95,7 @@ module AssemblyInfo =
 
   let _SetVersionValue matchLine mutateLine (fileContents: string) versionString =
     fileContents.Split ( [| Environment.NewLine |], StringSplitOptions.None )
-    |> Seq.map trim
+    |> Seq.map _stripTrailingNewlines
     |> Seq.map (fun line ->
           if matchLine line then mutateLine line versionString
           else line
