@@ -44,10 +44,16 @@ module AssemblyInfo =
     (not (_IsSingleLineComment line)) && (pattern >** line)
 
   let private _GetVersionString pattern line =
-    let m = Regex.Match(line, pattern);
+    let m = Regex.Match(line, pattern)
+
     // FIXME: This is garbage, but I just need it to work for now. Please come
     // back to this at some point
-    m.Groups.[1].Captures.[0].Value
+    if m.Groups.Count < 2
+      then String.Empty
+    elif m.Groups.[1].Captures.Count = 0
+      then String.Empty
+    else
+      m.Groups.[1].Captures.[0].Value
 
   let _ValidateAnyInformationalVersionAttributesFound lines =
     if Seq.isEmpty lines then raise (new Exception("Missing required AssemblyInformationalVersion attribute"))
@@ -62,7 +68,7 @@ module AssemblyInfo =
     |> (_GetVersionString _assemblyInformationalVersionPattern)
 
   let ParseInformationalVersionString (str: string) =
-    str.Split [| '\n' |]
+    str.Split ( [| Environment.NewLine |], StringSplitOptions.None )
     |> ParseInformationalVersionStringFromLines
 
   let GetAssemblyInformationalVersionString filePath =
@@ -86,7 +92,7 @@ module AssemblyInfo =
     _SetAttributeParametersValue "AssemblyInformationalVersion" line value
 
   let _SetVersionValue matchLine mutateLine (fileContents: string) versionString =
-    fileContents.Split [| '\n' |]
+    fileContents.Split ( [| Environment.NewLine |], StringSplitOptions.None )
     |> Seq.map trim
     |> Seq.map (fun line ->
           if matchLine line then mutateLine line versionString
