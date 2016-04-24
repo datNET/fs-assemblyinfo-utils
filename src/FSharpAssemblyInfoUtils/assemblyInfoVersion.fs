@@ -62,7 +62,7 @@ module AssemblyInfo =
     |> (_GetVersionString _assemblyInformationalVersionPattern)
 
   let ParseInformationalVersionString (str: string) =
-    str.Split [| '\n' |]
+    str.Split ( [| Environment.NewLine |], StringSplitOptions.None )
     |> ParseInformationalVersionStringFromLines
 
   let GetAssemblyInformationalVersionString filePath =
@@ -86,7 +86,7 @@ module AssemblyInfo =
     _SetAttributeParametersValue "AssemblyInformationalVersion" line value
 
   let _SetVersionValue matchLine mutateLine (fileContents: string) versionString =
-    fileContents.Split [| '\n' |]
+    fileContents.Split ( [| Environment.NewLine |], StringSplitOptions.None )
     |> Seq.map trim
     |> Seq.map (fun line ->
           if matchLine line then mutateLine line versionString
