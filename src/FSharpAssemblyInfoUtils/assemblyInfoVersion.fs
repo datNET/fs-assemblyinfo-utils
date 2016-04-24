@@ -87,6 +87,7 @@ module AssemblyInfo =
 
   let _SetVersionValue matchLine mutateLine (fileContents: string) versionString =
     fileContents.Split [| '\n' |]
+    |> Seq.map trim
     |> Seq.map (fun line ->
           if matchLine line then mutateLine line versionString
           else line
