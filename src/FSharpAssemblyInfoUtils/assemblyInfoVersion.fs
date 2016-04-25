@@ -11,7 +11,7 @@ module AssemblyInfo =
   let private _versionStringPattern = "\(\"(.+)\"\)"
 
   let private _GetAssemblyAttributeValuePattern attributeName =
-    String.Format("\[\<?assembly\: {0}\(\"(.+)\"\)\>?\]", [| attributeName |]);
+    String.Format("\[\<?assembly\: {0}\(\"(.+)\"\)\>?\]", [| attributeName |])
 
   let private _assemblyVersionPattern =
     _GetAssemblyAttributeValuePattern "AssemblyVersion"
@@ -106,3 +106,45 @@ module AssemblyInfo =
   let SetAssemblyVersion = _SetVersionValue _IsAssemblyVersionAttribute _SetAssemblyVersionValue
   let SetAssemblyFileVersion = _SetVersionValue _IsAssemblyFileVersionAttribute _SetAssemblyFileVersionValue
   let SetAssemblyInformationalVersion = _SetVersionValue _IsAssemblyInformationalVersionAttribute _SetAssemblyInformationalVersionValue
+
+module AInfo =
+  open System
+
+  type Attribute =
+  | AssemblyVersion of string
+  | AssemblyFileVersion of string
+  | AssemblyInformationalVersion of string
+    static member GetName (attr: Attribute) = attr.GetType().Name
+    static member GetValue attr =
+      match attr with
+      | AssemblyVersion v -> v
+      | AssemblyFileVersion v -> v
+      | AssemblyInformationalVersion v -> v
+
+  let getAttributeName = Attribute.GetName
+
+  let getAttributePattern attribute =
+    let name = getAttributeName attribute
+    let patternTemplate = "(\[\<?assembly\: {0}\(\")(.+)(\"\)\>?\])"
+
+    String.Format(patternTemplate, name)
+
+  let getAttributeCtorPattern ctor = getAttributePattern (ctor String.Empty)
+
+  let modifyAssemblyInfoFile filePath ([<ParamArray>] mutations: (((string -> Attribute) * (Attribute -> Attribute)) array)) =
+    printfn "Modifying AssemblyInfo file at %s" filePath
+    //let fileLines = IO.File.ReadAllLines filePath
+
+    mutations
+    |> Array.iter (
+        fun (ctor, mutator) ->
+          let pattern = getAttributeCtorPattern ctor
+          let parsed = ctor "TODO: actually parse"
+          let mutated = mutator parsed
+
+          printfn "pattern: %s" pattern
+          printfn "parsed: %A" parsed
+          printfn "mutated: %A" mutated
+      )
+
+    "TODO"

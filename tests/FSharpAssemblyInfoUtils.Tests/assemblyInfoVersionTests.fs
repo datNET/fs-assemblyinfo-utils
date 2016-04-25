@@ -37,3 +37,37 @@ let ``parse AssemblyInformationalVersion (F#)`` () =
 let ``throw an exception if AssemblyInformationalVersion missing (F#)`` () =
   (fun() -> ParseInformationalVersionString withoutFsInformationalVersion |> ignore)
   |> should throw typeof<System.Exception>
+
+let version = datNET.AInfo.AssemblyVersion("1.0.0.0")
+let fileVersion = datNET.AInfo.AssemblyFileVersion("1.0.0.0")
+let informationalVersion = datNET.AInfo.AssemblyInformationalVersion("1.0.0")
+
+let printItOut attribute =
+  let result =
+    match attribute with
+    | datNET.AInfo.AssemblyVersion verStr -> "av: " + verStr
+    | datNET.AInfo.AssemblyFileVersion verStr -> "afv: " + verStr
+    | datNET.AInfo.AssemblyInformationalVersion verStr -> "aiv: " + verStr
+
+  printfn "%s" (datNET.AInfo.getAttributePattern attribute)
+
+printItOut version
+printItOut fileVersion
+printItOut informationalVersion
+
+let result =
+  datNET.AInfo.modifyAssemblyInfoFile "F:\\420\\blaze\\it"
+    [|
+      (
+        datNET.AInfo.AssemblyVersion,
+        fun attr ->
+          let currentValue = datNET.AInfo.Attribute.GetValue attr
+          let newValue = currentValue + "[UPDATED]"
+
+          datNET.AInfo.AssemblyVersion newValue
+      ) ;
+      datNET.AInfo.AssemblyFileVersion, fun attr -> fileVersion ;
+      datNET.AInfo.AssemblyInformationalVersion, fun attr -> informationalVersion ;
+    |]
+
+printfn "%s" result
