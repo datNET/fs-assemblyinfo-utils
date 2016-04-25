@@ -58,16 +58,12 @@ printItOut informationalVersion
 let result =
   datNET.AInfo.modifyAssemblyInfoFile "F:\\420\\blaze\\it"
     [|
-      (
-        datNET.AInfo.AssemblyVersion,
-        fun attr ->
-          let currentValue = datNET.AInfo.Attribute.GetValue attr
-          let newValue = currentValue + "[UPDATED]"
+      datNET.AInfo.AssemblyVersion, fun attrVal -> attrVal + " [UPDATED]" ;
+      datNET.AInfo.AssemblyFileVersion, fun attrVal -> attrVal + " [UPDATED]" ;
+      datNET.AInfo.AssemblyInformationalVersion, fun attrVal -> attrVal + " [UPDATED]" ;
 
-          datNET.AInfo.AssemblyVersion newValue
-      ) ;
-      datNET.AInfo.AssemblyFileVersion, fun attr -> fileVersion ;
-      datNET.AInfo.AssemblyInformationalVersion, fun attr -> informationalVersion ;
+      // TODO: Figure out how to do this without blowing up (it's mad about string vs bool)
+      // datNET.AInfo.ComVisible, fun v -> false ;
     |]
 
 printfn "%s" result
