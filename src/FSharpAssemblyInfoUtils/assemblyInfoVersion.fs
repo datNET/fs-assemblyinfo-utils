@@ -11,7 +11,7 @@ module AssemblyInfo =
   let private _versionStringPattern = "\(\"(.+)\"\)"
 
   let private _GetAssemblyAttributeValuePattern attributeName =
-    String.Format("^\[\<?assembly\: {0}\(\"(.+)\"\)\>?\]$", [| attributeName |]);
+    String.Format("\[\<?assembly\: {0}\(\"(.+)\"\)\>?\]", [| attributeName |]);
 
   let private _assemblyVersionPattern =
     _GetAssemblyAttributeValuePattern "AssemblyVersion"
@@ -26,10 +26,10 @@ module AssemblyInfo =
   let private _IsSingleLineComment line = "^//" >** line
 
   let private _IsAssemblyAttribute line =
-    "^\[\<?assembly\:.+\(.+\)\>?\]$" >** line
+    "\[\<?assembly\:.+\(.+\)\>?\]" >** line
 
   let private _IsVersionAttribute line =
-    (not (_IsSingleLineComment line)) && ("Version\(.+\)\>?\]$" >** line)
+    (not (_IsSingleLineComment line)) && ("Version\(.+\)\>?\]" >** line)
 
   let private _IsAssemblyVersionAttribute line =
     let pattern = "AssemblyVersion\(\"(.+)\"\)"
@@ -48,16 +48,18 @@ module AssemblyInfo =
 
     // FIXME: This is garbage, but I just need it to work for now. Please come
     // back to this at some point
-    if m.Groups.Count < 2
-      then String.Empty
-    elif m.Groups.[1].Captures.Count = 0
-      then String.Empty
+    if m.Groups.Count < 2 then
+      String.Empty
+    elif m.Groups.[1].Captures.Count = 0 then
+      String.Empty
     else
       m.Groups.[1].Captures.[0].Value
 
   let _ValidateAnyInformationalVersionAttributesFound lines =
-    if Seq.isEmpty lines then raise (new Exception("Missing required AssemblyInformationalVersion attribute"))
-    else lines
+    if Seq.isEmpty lines then
+      raise (new Exception("Missing required AssemblyInformationalVersion attribute"))
+    else
+      lines
 
   let private _stripTrailingNewlines (str: string) = str.TrimEnd([| '\r' ; '\n'|])
 
