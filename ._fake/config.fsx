@@ -15,7 +15,7 @@ module Source =
   let SolutionFile = !! (Path.Combine(RootDir, "*.sln"))
 
 module Build =
-  let TestAssemblies = !! "tests/**/*.Tests.dll" -- "**/obj/**/*.Tests.dll"
+  let TestAssemblies = !! "tests/**/bin/Release/*.Tests.dll"
   let DotNetVersion = "4.5"
   let MSBuildArtifacts = !! "src/**/bin/**.*" ++ "src/**/obj/**/*.*"
 
