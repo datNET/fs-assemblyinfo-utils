@@ -107,71 +107,71 @@ module AssemblyInfo =
   let SetAssemblyFileVersion = _SetVersionValue _IsAssemblyFileVersionAttribute _SetAssemblyFileVersionValue
   let SetAssemblyInformationalVersion = _SetVersionValue _IsAssemblyInformationalVersionAttribute _SetAssemblyInformationalVersionValue
 
-module AInfo =
-  open System
-
-  type Attribute =
-  | AssemblyVersion of string
-  | AssemblyFileVersion of string
-  | AssemblyInformationalVersion of string
-  | ComVisible of bool
-    static member GetName (attr: Attribute) = attr.GetType().Name
-    static member GetStringValue attr =
-      match attr with
-      | AssemblyVersion v -> v
-      | AssemblyFileVersion v -> v
-      | AssemblyInformationalVersion v -> v
-      | _ -> (raise (new Exception("This is probably the wrong way to do this")))
-    static member GetBoolValue attr =
-      match attr with
-      | ComVisible v -> v
-      | _ -> (raise (new Exception("This is probably the wrong way to do this")))
-
-  let getAttributeName = Attribute.GetName
-
-  let getAttributePattern attribute =
-    let name = getAttributeName attribute
-    let patternTemplate = "(\[\<?assembly\: {0}\(\")(.+)(\"\)\>?\])"
-
-    String.Format(patternTemplate, name)
-
-  let getAttributeCtorPattern (ctor: 'a -> Attribute) = getAttributePattern (ctor Unchecked.defaultof<'a>)
-
-  let parseAttribute (ctor: 'a -> Attribute) input =
-    let dummyAttribute = ctor Unchecked.defaultof<'a>
-    let pattern = getAttributePattern dummyAttribute
-
-    // TODO
-    let _parsedBool = true
-    let _parsedString = "TODO: actually parse"
-
-    match dummyAttribute with
-    | ComVisible                   _ -> ComVisible                   _parsedBool
-    | AssemblyVersion              _ -> AssemblyVersion              _parsedString
-    | AssemblyFileVersion          _ -> AssemblyFileVersion          _parsedString
-    | AssemblyInformationalVersion _ -> AssemblyInformationalVersion _parsedString
-
-  let modifyAssemblyInfoFile filePath ([<ParamArray>] mutations: ((('a -> Attribute) * ('a -> 'a)) array)) =
-    printfn "Modifying AssemblyInfo file at %s" filePath
-    // TODO
-    let fileLines = Seq.empty<string>
-
-    mutations
-    |> Array.iter (
-        fun (ctor, mutator) ->
-          let pattern = getAttributeCtorPattern ctor
-          let parsedAttribute = parseAttribute ctor "TODO"
-
-          let mutatedAttribute =
-            match parsedAttribute with
-            | AssemblyVersion v -> AssemblyVersion (mutator v)
-
-            // TODO: Figure out how to do this without blowing up (it's mad about string vs bool)
-            // | ComVisible v -> ComVisible (mutator v)
-
-          printfn "pattern: %s" pattern
-          printfn "parsed: %A" parsedAttribute
-          printfn "mutated: %A" mutatedAttribute
-      )
-
-    "TODO"
+//module AInfo =
+//  open System
+//
+//  type Attribute =
+//  | AssemblyVersion of string
+//  | AssemblyFileVersion of string
+//  | AssemblyInformationalVersion of string
+//  | ComVisible of bool
+//    static member GetName (attr: Attribute) = attr.GetType().Name
+//    static member GetStringValue attr =
+//      match attr with
+//      | AssemblyVersion v -> v
+//      | AssemblyFileVersion v -> v
+//      | AssemblyInformationalVersion v -> v
+//      | _ -> (raise (new Exception("This is probably the wrong way to do this")))
+//    static member GetBoolValue attr =
+//      match attr with
+//      | ComVisible v -> v
+//      | _ -> (raise (new Exception("This is probably the wrong way to do this")))
+//
+//  let getAttributeName = Attribute.GetName
+//
+//  let getAttributePattern attribute =
+//    let name = getAttributeName attribute
+//    let patternTemplate = "(\[\<?assembly\: {0}\(\")(.+)(\"\)\>?\])"
+//
+//    String.Format(patternTemplate, name)
+//
+//  let getAttributeCtorPattern (ctor: 'a -> Attribute) = getAttributePattern (ctor Unchecked.defaultof<'a>)
+//
+//  let parseAttribute (ctor: 'a -> Attribute) input =
+//    let dummyAttribute = ctor Unchecked.defaultof<'a>
+//    let pattern = getAttributePattern dummyAttribute
+//
+//    // TODO
+//    let _parsedBool = true
+//    let _parsedString = "TODO: actually parse"
+//
+//    match dummyAttribute with
+//    | ComVisible                   _ -> ComVisible                   _parsedBool
+//    | AssemblyVersion              _ -> AssemblyVersion              _parsedString
+//    | AssemblyFileVersion          _ -> AssemblyFileVersion          _parsedString
+//    | AssemblyInformationalVersion _ -> AssemblyInformationalVersion _parsedString
+//
+//  let modifyAssemblyInfoFile filePath ([<ParamArray>] mutations: ((('a -> Attribute) * ('a -> 'a)) array)) =
+//    printfn "Modifying AssemblyInfo file at %s" filePath
+//    // TODO
+//    let fileLines = Seq.empty<string>
+//
+//    mutations
+//    |> Array.iter (
+//        fun (ctor, mutator) ->
+//          let pattern = getAttributeCtorPattern ctor
+//          let parsedAttribute = parseAttribute ctor "TODO"
+//
+//          let mutatedAttribute =
+//            match parsedAttribute with
+//            | AssemblyVersion v -> AssemblyVersion (mutator v)
+//
+//            // TODO: Figure out how to do this without blowing up (it's mad about string vs bool)
+//            // | ComVisible v -> ComVisible (mutator v)
+//
+//          printfn "pattern: %s" pattern
+//          printfn "parsed: %A" parsedAttribute
+//          printfn "mutated: %A" mutatedAttribute
+//      )
+//
+//    "TODO"

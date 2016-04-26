@@ -55,6 +55,7 @@
     <Content Include="packages.config" />
     <Compile Include="assemblyInfoVersionTests.fs" />
     <Content Include="App.config" />
+    <Compile Include="attrTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

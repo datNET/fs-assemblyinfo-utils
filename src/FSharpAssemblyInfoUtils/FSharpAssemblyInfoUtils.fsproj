@@ -54,6 +54,7 @@
     <Compile Include="..\..\AssemblyInfo.fs">
       <Link>AssemblyInfo.fs</Link>
     </Compile>
+    <Compile Include="attributes.fs" />
     <Compile Include="assemblyInfoVersion.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
