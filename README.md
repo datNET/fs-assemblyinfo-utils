@@ -1,1 +1,1 @@
-# fs-assemblyinfo-utils [![Build status](https://ci.appveyor.com/api/projects/status/1ix1j9q7muhbefnd?svg=true)](https://ci.appveyor.com/project/datNET/fs-assemblyinfo-utils)
+# fs-assemblyinfo-utils [![Build status](https://ci.appveyor.com/api/projects/status/1ix1j9q7muhbefnd/branch/master?svg=true)](https://ci.appveyor.com/project/datNET/fs-assemblyinfo-utils/branch/master)
